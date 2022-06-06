@@ -8,7 +8,7 @@ function getRandomInt(min, max) {
 }
 getRandomInt(0, 10);
 
-//Проверка максималтной длины строки
+//Проверка максимальной длины строки
 
 function checkingMaxString(string, maxLength) {
   if (string.length <= maxLength) {
