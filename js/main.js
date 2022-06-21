@@ -18,7 +18,7 @@ const DESCRIPTION_LIST = [
   'Это лучшее, что могло произойти с нами за всё время'
 ];
 
-const MESSAGE = [
+const MESSAGE_LIST = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.'
@@ -37,37 +37,39 @@ getRandomPositiveInteger();
 
 //проверка длины строки
 const checkStringLength = (string, length) => string.length <= length;
+checkStringLength('');
 
 //возврат случайного элемента массива
 const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length - 1)];
 
-// объект для настройки генерирующих публикаций
-const generationObjectPublications = () => {
-  const getNumberLikes = getRandomPositiveInteger(15, 200);
-
-  return {
-    publicationIndex: getRandomPositiveInteger(1, 25),
-    publicationUrl: `photos/${getRandomPositiveInteger(1, 25)}.jpg`,
-    publicationDescription: getRandomArrayElement(DESCRIPTION_LIST),
-    likesNumber: getNumberLikes,
-    commentsPublication: generationComments(),
-  };
-};
-
 // генерация комментариев
-const generationComments = () => {
-  const getRandomNames = getRandomArrayElement(NAME_LIST);
+const getCommentsPublications = () => {
+  const randomNames = getRandomArrayElement(NAME_LIST);
 
   return {
     id: getRandomPositiveInteger(1, 350),
     avatar: `img/avatar-${getRandomPositiveInteger(1, 6)}.svg`,
-    message: getRandomArrayElement(MESSAGE),
-    userName: getRandomNames
+    message: getRandomArrayElement(MESSAGE_LIST),
+    userName: randomNames
+  };
+};
+
+// функция для настройки генерирующих публикаций
+const getObjectPublications = () => {
+  const getNumberLikes = getRandomPositiveInteger(15, 200);
+
+  return {
+    generationIdPublication: getRandomPositiveInteger(1, 25),
+    publicationIndex: getRandomPositiveInteger(1, 25),
+    publicationUrl: `photos/${getRandomPositiveInteger(1, 25)}.jpg`,
+    publicationDescription: getRandomArrayElement(DESCRIPTION_LIST),
+    likesNumber: getNumberLikes,
+    commentsPublication: getCommentsPublications(),
   };
 };
 
 //генерация публикаций
-const generationRandomPublication = Array.from({length: 25}, generationObjectPublications);
-// console.log(generationRandomPublication);
+const generationRandomPublication = Array.from({length: 25}, getObjectPublications);
+console.log(generationRandomPublication);
 
 
