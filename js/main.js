@@ -24,6 +24,8 @@ const MESSAGE_LIST = [
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.'
 ];
 
+const numberGeneratedPublications = 25;
+
 // Функция возвращающая случайное целое число из переданного диапазона включительно
 // Источник - https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_random + доработка
 
@@ -69,7 +71,5 @@ const getObjectPublications = () => {
 };
 
 //генерация публикаций
-const generationRandomPublication = Array.from({length: 25}, getObjectPublications);
+const generationRandomPublication = Array.from({length: numberGeneratedPublications}, getObjectPublications);
 console.log(generationRandomPublication);
-
-
