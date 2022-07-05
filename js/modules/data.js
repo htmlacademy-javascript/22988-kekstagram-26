@@ -57,6 +57,5 @@ const getObjectPublications = () => {
 
 //генерация публикаций
 const generateRandomPublication = () => Array.from({length: numberGeneratedPublications}, getObjectPublications);
-generateRandomPublication();
 
 export {generateRandomPublication};
