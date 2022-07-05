@@ -1,2 +1,8 @@
 import {generateRandomPublication} from './modules/data.js';
-// console.log(generateRandomPublication());
+
+import {renderingPhotoPublication} from './modules/rendering-publications.js';
+
+//генерируемые публикации в main
+const publications = generateRandomPublication(25);
+
+renderingPhotoPublication(publications);
