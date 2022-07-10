@@ -18,16 +18,23 @@ const DESCRIPTION_LIST = [
   'Отлично проведённое время',
   'Путь, который мы выбрали',
   'Вот так встречают закаты и рассветы',
-  'Это лучшее, что могло произойти с нами за всё время'
+  'Это лучшее, что могло произойти с нами за всё время',
+  'Лучший день!'
 ];
 
 const MESSAGE_LIST = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
-  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.'
+  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
+  'Супер!',
+  'Об этом можно лишь мечтать'
 ];
 
+//количество генерируемых миниатюр
 const numberGeneratedPublications = 25;
+
+//количество генерируемых комментариев каждой публикации
+const numberGenerateComments = 5;
 
 // генерация комментариев
 const getCommentsPublications = () => {
@@ -40,6 +47,7 @@ const getCommentsPublications = () => {
     userName: randomNames
   };
 };
+const generateRandomComments = () => Array.from({length:numberGenerateComments}, getCommentsPublications);
 
 // функция для настройки генерирующих публикаций
 const getObjectPublications = () => {
@@ -51,7 +59,7 @@ const getObjectPublications = () => {
     publicationUrl: `photos/${getRandomPositiveInteger(1, 25)}.jpg`,
     publicationDescription: getRandomArrayElement(DESCRIPTION_LIST),
     likesNumber: getNumberLikes,
-    commentsPublication: getCommentsPublications(),
+    commentsPublication: generateRandomComments(),
   };
 };
 
