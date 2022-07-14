@@ -12,9 +12,8 @@ const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0,
 
 //проверка длины строки
 const checkStringLength = (string, length) => string.length <= length;
-checkStringLength('');
 
 //закрытие по ESC
 const isEscapeKey = (evt) => (evt.key === 'Escape');
 
-export {getRandomPositiveInteger, getRandomArrayElement, isEscapeKey};
+export {getRandomPositiveInteger, getRandomArrayElement, isEscapeKey, checkStringLength};

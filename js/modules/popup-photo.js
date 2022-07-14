@@ -73,5 +73,5 @@ function escButton (evt) {
   }
 }
 
-export {openModalPhoto, createComment};
+export {openModalPhoto, createComment, elementBody};
 // console.log();
