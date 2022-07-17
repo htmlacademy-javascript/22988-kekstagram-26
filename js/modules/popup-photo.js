@@ -12,13 +12,11 @@ const formComments = fullScreenPublication.querySelector('.social__comments');
 const commentTemplate = formComments.querySelector('.social__comment');
 const photoComments = fullScreenPublication.querySelector('.social__comment-count').querySelector('.comments-count');
 
-
-//временное скрытие счетчиков
-const commentsCount = fullScreenPublication.querySelector('.social__comment-count');
-const commentsLoader = fullScreenPublication.querySelector('.comments-loader');
-
-commentsCount.classList.add('hidden');
-commentsLoader.classList.add('hidden');
+const commentsLoader = fullScreenPublication.querySelector('.comments-loader'); //кнопка загрузки новых комментариев
+const uploadedComments = document.querySelector('.comments-uploaded');
+const COMMENTS_TO_SHOW = 5;
+let commentIndex = 0;
+let commentsOnPublication = [];
 
 //наполнение комментарий для каждой публикации
 const createComment = (commentList) => {
@@ -35,22 +33,41 @@ const createComment = (commentList) => {
   formComments.append(commentsFragment);
 };
 
+//реализация показа новых комментариев по кнопке "загрузить еще"
+const uploadingPublicationComments = () => {
+  createComment(commentsOnPublication.slice(commentIndex, commentIndex + COMMENTS_TO_SHOW));
+  commentIndex += COMMENTS_TO_SHOW;
+
+  if (commentsOnPublication.length > commentIndex) {
+    commentsLoader.classList.remove('hidden');
+  } else {
+    commentsLoader.classList.add('hidden');
+    commentIndex = commentsOnPublication.length;
+  }
+  uploadedComments.textContent = commentIndex;
+};
+
 //наполнение информационной части публикации
 const createModalPhoto = (photo) => {
+  commentIndex = 0;
+  commentsLoader.addEventListener('click', uploadingPublicationComments);
   photoAddress.src = photo.publicationUrl;
   photoLikes.textContent = photo.likesNumber;
   photoComments.textContent = photo.commentsPublication.length;
   photoDescription.textContent = photo.publicationDescription;
+  commentsOnPublication = photo.commentsPublication;
 
-  createComment(photo.commentsPublication);
+  formComments.innerHTML = '';
+  uploadingPublicationComments();
 };
 
 //закрытие модального окна публикации
 const closefullPublication = () => {
   fullScreenPublication.classList.add('hidden');
   elementBody.classList.remove('modal-open');
-  document.removeEventListener('keydown', escButton);
 
+  document.removeEventListener('keydown', escButton);
+  commentsLoader.removeEventListener('click', uploadingPublicationComments);
   formComments.innerHTML = '';
 };
 
@@ -61,8 +78,10 @@ const openModalPhoto = (photo) => {
 
   buttonCloseModal.addEventListener('click', closefullPublication);
   document.addEventListener('keydown', escButton);
-  formComments.innerHTML = '';
 
+
+  commentsLoader.addEventListener('click', uploadingPublicationComments);
+  formComments.innerHTML = '';
   createModalPhoto(photo);
 };
 
@@ -74,4 +93,3 @@ function escButton (evt) {
 }
 
 export {openModalPhoto, createComment, elementBody};
-// console.log();

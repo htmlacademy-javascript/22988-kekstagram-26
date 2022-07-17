@@ -34,7 +34,7 @@ const MESSAGE_LIST = [
 const numberGeneratedPublications = 25;
 
 //количество генерируемых комментариев каждой публикации
-const numberGenerateComments = 5;
+const numberGenerateComments = 10;
 
 // генерация комментариев
 const getCommentsPublications = () => {
