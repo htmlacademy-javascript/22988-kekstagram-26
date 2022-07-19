@@ -5,7 +5,6 @@ const getRandomPositiveInteger = (a, b) => {
   const result = Math.random() * (upper - lower + 1) + lower;
   return Math.floor(result);
 };
-getRandomPositiveInteger();
 
 //возврат случайного элемента массива
 const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length - 1)];
@@ -13,7 +12,17 @@ const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0,
 //проверка длины строки
 const checkStringLength = (string, length) => string.length <= length;
 
+const mathClamp = (number, min, max) => {
+  if (number < min) {
+    number = min;
+  }
+  if (number > max) {
+    number = max;
+  }
+  return number;
+};
+
 //закрытие по ESC
 const isEscapeKey = (evt) => (evt.key === 'Escape');
 
-export {getRandomPositiveInteger, getRandomArrayElement, isEscapeKey, checkStringLength};
+export {getRandomPositiveInteger, getRandomArrayElement, isEscapeKey, checkStringLength, mathClamp};
