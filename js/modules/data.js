@@ -33,9 +33,6 @@ const MESSAGE_LIST = [
 //количество генерируемых миниатюр
 const numberGeneratedPublications = 25;
 
-//количество генерируемых комментариев каждой публикации
-const numberGenerateComments = 10;
-
 // генерация комментариев
 const getCommentsPublications = () => {
   const randomNames = getRandomArrayElement(NAME_LIST);
@@ -47,7 +44,7 @@ const getCommentsPublications = () => {
     userName: randomNames
   };
 };
-const generateRandomComments = () => Array.from({length:numberGenerateComments}, getCommentsPublications);
+const generateRandomComments = () => Array.from({length:getRandomPositiveInteger(1, 25)}, getCommentsPublications);
 
 // функция для настройки генерирующих публикаций
 const getObjectPublications = () => {
@@ -59,7 +56,7 @@ const getObjectPublications = () => {
     publicationUrl: `photos/${getRandomPositiveInteger(1, 25)}.jpg`,
     publicationDescription: getRandomArrayElement(DESCRIPTION_LIST),
     likesNumber: getNumberLikes,
-    commentsPublication: generateRandomComments(),
+    commentsPublication: generateRandomComments()
   };
 };
 

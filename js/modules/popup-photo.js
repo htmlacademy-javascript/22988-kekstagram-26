@@ -1,5 +1,7 @@
 import {isEscapeKey} from './util.js';
 
+const COMMENTS_TO_SHOW = 5;
+
 const elementBody = document.querySelector('body');
 const fullScreenPublication = document.querySelector('.big-picture');
 
@@ -14,7 +16,6 @@ const photoComments = fullScreenPublication.querySelector('.social__comment-coun
 
 const commentsLoader = fullScreenPublication.querySelector('.comments-loader'); //кнопка загрузки новых комментариев
 const uploadedComments = document.querySelector('.comments-uploaded');
-const COMMENTS_TO_SHOW = 5;
 let commentIndex = 0;
 let commentsOnPublication = [];
 

@@ -1,5 +1,6 @@
 import {elementBody} from './popup-photo.js';
 import {checkStringLength, isEscapeKey} from './util.js';
+import {makeScalable, makeUnScalable, enableFilters, disableFilters} from './filters.js';
 
 const HASHTAG_PATTERN = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/;
 const MAX_HASHTAGS_AMOUNT = 5;
@@ -18,6 +19,8 @@ const openingModalUploaded = () => {
   overlayModalPublication.classList.remove('hidden');
   elementBody.classList.add('modal-open');
   document.addEventListener('keydown', pressingEsc);
+  enableFilters();
+  makeScalable();
 };
 
 //закрытие модального окна
@@ -25,6 +28,9 @@ const closeModalUploaded = () => {
   overlayModalPublication.classList.add('hidden');
   elementBody.classList.remove('modal-open');
   document.removeEventListener('keydown', pressingEsc);
+
+  disableFilters();
+  makeUnScalable();
   uploadForm.reset();
 };
 
