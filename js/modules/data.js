@@ -30,7 +30,7 @@ const MESSAGE_LIST = [
   'Об этом можно лишь мечтать'
 ];
 
-//количество генерируемых миниатюр
+// количество генерируемых миниатюр
 const numberGeneratedPublications = 25;
 
 // генерация комментариев
@@ -60,7 +60,7 @@ const getObjectPublications = () => {
   };
 };
 
-//генерация публикаций
+// генерация публикаций
 const generateRandomPublication = () => Array.from({length: numberGeneratedPublications}, getObjectPublications);
 
 export {generateRandomPublication};
