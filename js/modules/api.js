@@ -7,7 +7,7 @@ const SEND_TO = 'https://26.javascript.pages.academy/kekstagram';
 const getData = (onSuccess) => {
   fetch(GET_FROM)
     .then((response) => response.json())
-    .then(() => onSuccess())
+    .then((photo) => onSuccess(photo))
     .catch(() => {
       showAlert('Произошла ошибка. Попробуйте обновить страницу!');
     });

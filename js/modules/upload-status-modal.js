@@ -55,7 +55,7 @@ function successModalClose() {
 
 //отображение сообщения с ошибкой отправки
 function errorModalOpen () {
-  errorMessageElement.style.zIndex = '99';
+  errorMessageElement.style.zIndex = '50';
   elementBody.append(errorMessageElement);
   elementBody.classList.add('modal-open');
   document.addEventListener('keydown', onPopupErrorClose);

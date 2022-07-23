@@ -16,9 +16,11 @@ const buttonCloseModalUpload = document.querySelector('#upload-cancel');
 const hashtagInput = document.querySelector('.text__hashtags');
 const commentInput = uploadForm.querySelector('.text__description');
 const submitButton = document.querySelector('.img-upload__submit');
+const PublicationPreview = document.querySelector('.img-upload__preview img');
 
 //открытие модального окна публикации загрузки
-const openingModalUploaded = () => {
+const openingModalUploaded = (evt) => {
+  PublicationPreview.src = URL.createObjectURL(evt.target.files[0]);
   overlayModalPublication.classList.remove('hidden');
   elementBody.classList.add('modal-open');
   document.addEventListener('keydown', pressingEsc);
@@ -181,4 +183,6 @@ const setPublicationFormSubmit = (onSuccess) => {
   });
 };
 
-export {setPublicationFormSubmit, closeModalUploaded};
+uploadInputPublication.addEventListener('change', openingModalUploaded);
+
+export {setPublicationFormSubmit, openingModalUploaded, closeModalUploaded};
