@@ -139,14 +139,6 @@ const pristine = new Pristine(uploadForm, {
 pristine.addValidator(hashtagInput, hashtagsValidation, getErrorMessage);
 pristine.addValidator(commentInput, validationDescription, `Допустимое количество символов ${MAX_LENGTH_COMMENT}`);
 
-uploadForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  const isFormValid = pristine.validate();
-  if (isFormValid) {
-    uploadForm.submit();
-  }
-});
-
 //блокировка кнопки при отправке
 const blockSubmitButton = () => {
   submitButton.disabled = true;
