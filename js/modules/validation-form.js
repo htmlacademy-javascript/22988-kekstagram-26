@@ -1,6 +1,8 @@
 import {elementBody} from './popup-photo.js';
-import {checkStringLength, isEscapeKey} from './util.js';
+import {checkStringLength, isEscapeKey, showAlert} from './util.js';
 import {makeScalable, makeUnScalable, enableFilters, disableFilters} from './filters.js';
+import {sendData} from './api.js';
+import {successModalOpen, errorModalOpen} from './upload-status-modal.js';
 
 const HASHTAG_PATTERN = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/;
 const MAX_HASHTAGS_AMOUNT = 5;
@@ -13,9 +15,12 @@ const uploadForm = document.querySelector('.img-upload__form');
 const buttonCloseModalUpload = document.querySelector('#upload-cancel');
 const hashtagInput = document.querySelector('.text__hashtags');
 const commentInput = uploadForm.querySelector('.text__description');
+const submitButton = document.querySelector('.img-upload__submit');
+const PublicationPreview = document.querySelector('.img-upload__preview img');
 
 //открытие модального окна публикации загрузки
-const openingModalUploaded = () => {
+const openingModalUploaded = (evt) => {
+  PublicationPreview.src = URL.createObjectURL(evt.target.files[0]);
   overlayModalPublication.classList.remove('hidden');
   elementBody.classList.add('modal-open');
   document.addEventListener('keydown', pressingEsc);
@@ -141,3 +146,43 @@ uploadForm.addEventListener('submit', (evt) => {
     uploadForm.submit();
   }
 });
+
+//блокировка кнопки при отправке
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Отправляю...';
+};
+
+//разблокировка кнопки
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать!';
+};
+
+const setPublicationFormSubmit = (onSuccess) => {
+  uploadForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      sendData(
+        () => {
+          onSuccess();
+          unblockSubmitButton();
+          successModalOpen();
+        },
+        () => {
+          showAlert('Не удалось отправить форму. Попробуйте ещё раз');
+          unblockSubmitButton();
+          errorModalOpen();
+        },
+        new FormData(evt.target),
+      );
+    }
+  });
+};
+
+uploadInputPublication.addEventListener('change', openingModalUploaded);
+
+export {setPublicationFormSubmit, openingModalUploaded, closeModalUploaded};

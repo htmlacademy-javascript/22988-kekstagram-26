@@ -112,7 +112,7 @@ const updatePublicationEffect = (effectName, effectValue) => {
 //при выборе фильтра реализация сброса его интенсивности по дефолту
 function onFilterChange(evt) {
   const filterName = evt.target.value;
-  hideEffectSlider();//скрытие слайдера
+  hideEffectSlider();
   updatePublicationClassName(filterName);
   updatePublicationEffect();
   const sliderSettings = filtersSettings[filterName];

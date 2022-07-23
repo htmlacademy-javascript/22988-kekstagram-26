@@ -52,11 +52,11 @@ const uploadingPublicationComments = () => {
 const createModalPhoto = (photo) => {
   commentIndex = 0;
   commentsLoader.addEventListener('click', uploadingPublicationComments);
-  photoAddress.src = photo.publicationUrl;
-  photoLikes.textContent = photo.likesNumber;
-  photoComments.textContent = photo.commentsPublication.length;
-  photoDescription.textContent = photo.publicationDescription;
-  commentsOnPublication = photo.commentsPublication;
+  photoAddress.src = photo.url;
+  photoLikes.textContent = photo.likes;
+  photoComments.textContent = photo.comments.length;
+  photoDescription.textContent = photo.description;
+  commentsOnPublication = photo.comments;
 
   formComments.innerHTML = '';
   uploadingPublicationComments();
