@@ -1,4 +1,5 @@
 const ALERT_SHOW_TIME = 3000;
+const RERENDER_DELAY = 500;
 
 // Функция возвращающая случайное целое число из переданного диапазона включительно
 const getRandomPositiveInteger = (a, b) => {
@@ -62,7 +63,7 @@ const showAlert = (message) => {
 };
 
 //устранение функции дребезга(мигания)
-const debounce = (callback, timeoutDelay) => {
+const debounce = (callback, timeoutDelay = RERENDER_DELAY) => {
   let timeoutId;
   return (...rest) => {
     clearTimeout(timeoutId);
