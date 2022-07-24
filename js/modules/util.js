@@ -8,6 +8,18 @@ const getRandomPositiveInteger = (a, b) => {
   return Math.floor(result);
 };
 
+const getRandomUniqueElements = (arr) => {
+  const newArray = arr.slice();
+  const elements = [];
+  const newArrayLength = arr.length;
+  for (let i = 0; i < newArrayLength; i++) {
+    const randomId = getRandomPositiveInteger(0, newArray.length- 1);
+    elements.push(newArray[randomId]);
+    newArray.splice(randomId, 1);
+  }
+  return elements;
+};
+
 //возврат случайного элемента массива
 const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length - 1)];
 
@@ -49,4 +61,13 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-export {getRandomPositiveInteger, getRandomArrayElement, isEscapeKey, checkStringLength, mathClamp, showAlert};
+//устранение функции дребезга(мигания)
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+export {getRandomPositiveInteger, getRandomArrayElement, getRandomUniqueElements, isEscapeKey, checkStringLength, mathClamp, showAlert, debounce};
