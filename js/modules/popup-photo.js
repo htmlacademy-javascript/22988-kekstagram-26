@@ -14,7 +14,7 @@ const formComments = fullScreenPublication.querySelector('.social__comments');
 const commentTemplate = formComments.querySelector('.social__comment');
 const photoComments = fullScreenPublication.querySelector('.social__comment-count').querySelector('.comments-count');
 
-const commentsLoader = fullScreenPublication.querySelector('.comments-loader'); //кнопка загрузки новых комментариев
+const commentsLoader = fullScreenPublication.querySelector('.comments-loader');
 const uploadedComments = document.querySelector('.comments-uploaded');
 let commentIndex = 0;
 let commentsOnPublication = [];
