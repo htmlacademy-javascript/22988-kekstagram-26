@@ -3,21 +3,8 @@ import {openModalPhoto} from './popup-photo.js';
 const containerImages = document.querySelector('.pictures');
 const photoTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const templateFragment = document.createDocumentFragment();
+const publicationFilterContainer = document.querySelector('.img-filters');
 
-// const renderingPhotoPublication = (publications) => {
-//   const templateFragment = document.createDocumentFragment();
-//   publications.forEach((photo) => {
-//     const newPublication = photoTemplate.cloneNode(true);
-//     newPublication.querySelector('.picture__img').src = photo.publicationUrl;
-//     newPublication.querySelector('.picture__likes').textContent = photo.likesNumber;
-//     newPublication.querySelector('.picture__comments').textContent = photo.commentsPublication.length;
-
-//     newPublication.addEventListener('click', () => openModalPhoto(photo));
-
-//     templateFragment.append(newPublication);
-//     containerImages.append(templateFragment);
-//   });
-// };
 // рендер одной публикации
 function renderingPhotoPublication(photo) {
   const newPublication = photoTemplate.cloneNode(true);
@@ -36,4 +23,11 @@ const renderUserPhotos = (publications) => {
   });
   return containerImages.appendChild(templateFragment);
 };
-export {renderUserPhotos};
+
+//показ фильтров после загрузки публикаций с сервера
+publicationFilterContainer.classList.remove('img-filters--inactive');
+
+containerImages.querySelectorAll('.picture').forEach((element) => {element.remove();});
+
+
+export {renderUserPhotos, renderingPhotoPublication};

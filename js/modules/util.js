@@ -1,4 +1,5 @@
 const ALERT_SHOW_TIME = 3000;
+const RERENDER_DELAY = 500;
 
 // Функция возвращающая случайное целое число из переданного диапазона включительно
 const getRandomPositiveInteger = (a, b) => {
@@ -6,6 +7,18 @@ const getRandomPositiveInteger = (a, b) => {
   const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
   const result = Math.random() * (upper - lower + 1) + lower;
   return Math.floor(result);
+};
+
+const getRandomUniqueElements = (arr) => {
+  const newArray = arr.slice();
+  const elements = [];
+  const newArrayLength = arr.length;
+  for (let i = 0; i < newArrayLength; i++) {
+    const randomId = getRandomPositiveInteger(0, newArray.length- 1);
+    elements.push(newArray[randomId]);
+    newArray.splice(randomId, 1);
+  }
+  return elements;
 };
 
 //возврат случайного элемента массива
@@ -49,4 +62,13 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-export {getRandomPositiveInteger, getRandomArrayElement, isEscapeKey, checkStringLength, mathClamp, showAlert};
+//устранение функции дребезга(мигания)
+const debounce = (callback, timeoutDelay = RERENDER_DELAY) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+export {getRandomPositiveInteger, getRandomArrayElement, getRandomUniqueElements, isEscapeKey, checkStringLength, mathClamp, showAlert, debounce};
