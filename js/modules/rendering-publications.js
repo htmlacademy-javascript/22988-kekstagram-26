@@ -3,7 +3,6 @@ import {openModalPhoto} from './popup-photo.js';
 const containerImages = document.querySelector('.pictures');
 const photoTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const templateFragment = document.createDocumentFragment();
-const publicationFilterContainer = document.querySelector('.img-filters');
 
 // рендер одной публикации
 function renderingPhotoPublication(photo) {
@@ -23,11 +22,5 @@ const renderUserPhotos = (publications) => {
   });
   return containerImages.appendChild(templateFragment);
 };
-
-//показ фильтров после загрузки публикаций с сервера
-publicationFilterContainer.classList.remove('img-filters--inactive');
-
-containerImages.querySelectorAll('.picture').forEach((element) => {element.remove();});
-
 
 export {renderUserPhotos, renderingPhotoPublication};
