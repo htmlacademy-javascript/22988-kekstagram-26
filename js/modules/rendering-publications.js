@@ -6,13 +6,13 @@ const templateFragment = document.createDocumentFragment();
 
 // рендер одной публикации
 function renderingPhotoPublication(photo) {
-  const newPublication = photoTemplate.cloneNode(true);
-  newPublication.querySelector('img').src = photo.url;
-  newPublication.querySelector('.picture__likes').textContent = photo.likes;
-  newPublication.querySelector('.picture__comments').textContent = photo.comments.length;
+  const newPublicationHandler = photoTemplate.cloneNode(true);
+  newPublicationHandler.querySelector('img').src = photo.url;
+  newPublicationHandler.querySelector('.picture__likes').textContent = photo.likes;
+  newPublicationHandler.querySelector('.picture__comments').textContent = photo.comments.length;
 
-  newPublication.addEventListener('click', () => openModalPhoto(photo));
-  templateFragment.appendChild(newPublication);
+  newPublicationHandler.addEventListener('click', () => openModalPhoto(photo));
+  templateFragment.appendChild(newPublicationHandler);
 }
 
 //рендер всех публикаций с сервера

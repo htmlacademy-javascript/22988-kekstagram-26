@@ -1,5 +1,5 @@
 import {elementBody} from './popup-photo.js';
-import {checkStringLength, isEscapeKey, showAlert} from './util.js';
+import {checkStringLength, isEscapeKey} from './util.js';
 import {makeScalable, makeUnScalable, enableFilters, disableFilters} from './filters.js';
 import {sendData} from './api.js';
 import {successModalOpen, errorModalOpen} from './upload-status-modal.js';
@@ -9,60 +9,22 @@ const MAX_HASHTAGS_AMOUNT = 5;
 const MAX_LENGTH_COMMENT = 140;
 const MAX_LENGTH_HASHTAG = 20;
 
-const uploadInputPublication = document.querySelector('#upload-file');
+const uploadInputPublicationHandler = document.querySelector('#upload-file');
 const overlayModalPublication = document.querySelector('.img-upload__overlay');
-const uploadForm = document.querySelector('.img-upload__form');
-const buttonCloseModalUpload = document.querySelector('#upload-cancel');
-const hashtagInput = document.querySelector('.text__hashtags');
-const commentInput = uploadForm.querySelector('.text__description');
+const uploadFormHandler = document.querySelector('.img-upload__form');
+const onButtonCloseModalUpload = document.querySelector('#upload-cancel');
+const hashtagInputHandler = document.querySelector('.text__hashtags');
+const commentInputHandler = uploadFormHandler.querySelector('.text__description');
 const submitButton = document.querySelector('.img-upload__submit');
 
-//открытие модального окна публикации загрузки
-const openingModalUploaded = () => {
-  overlayModalPublication.classList.remove('hidden');
-  elementBody.classList.add('modal-open');
-  document.addEventListener('keydown', pressingEsc);
-  enableFilters();
-  makeScalable();
-};
-
-//закрытие модального окна
-const closeModalUploaded = () => {
-  overlayModalPublication.classList.add('hidden');
-  elementBody.classList.remove('modal-open');
-  document.removeEventListener('keydown', pressingEsc);
-
-  disableFilters();
-  makeUnScalable();
-  uploadForm.reset();
-};
-
-//закрытие модального окна по Esc
-function pressingEsc (evt) {
-  if(isEscapeKey(evt)) {
-    closeModalUploaded();
-  }
-}
-//закрытие по клику на кнопку "крестик"
-buttonCloseModalUpload.addEventListener('click', () => {
-  closeModalUploaded();
-});
-
-//загрузка публикаций через upload-file
-uploadInputPublication.addEventListener('change', openingModalUploaded);
-
-//отмена обработчика Esc при фокусе в поле хэштегов
-hashtagInput.addEventListener('keydown', (evt) => {
-  if(isEscapeKey(evt)) {
-    evt.stopPropagation();
-  }
-});
-
-//отмена обработчика Esc при фокусе в поле комментариев
-commentInput.addEventListener('keydown', (evt) => {
-  if(isEscapeKey(evt)) {
-    evt.stopPropagation();
-  }
+//настройки Pristine для формы загрузки публикации
+const pristine = new Pristine(uploadFormHandler, {
+  classTo: 'img-upload__field-wrapper',
+  errorClass: 'is-invalid',
+  successClass: 'is-valid',
+  errorTextParent: 'img-upload__field-wrapper',
+  errorTextTag: 'div',
+  errorTextClass: 'form-error'
 });
 
 //валидация хэштегов по пунктам
@@ -70,7 +32,7 @@ let validationErrorMessage;
 
 const getErrorMessage = () => validationErrorMessage;
 
-const hashtagsValidation = (hashtagInputValue) => {
+const validateHashtags = (hashtagInputValue) => {
   const hashtags = hashtagInputValue.split(' ');
 
   if(hashtagInputValue === '') {
@@ -120,22 +82,57 @@ const hashtagsValidation = (hashtagInputValue) => {
   return true;
 };
 
-//валидация комментариев публикации
-const validationDescription = (descriptionInputValue) => checkStringLength(descriptionInputValue, MAX_LENGTH_COMMENT);
+//открытие модального окна публикации загрузки
+const openModalUploaded = () => {
+  overlayModalPublication.classList.remove('hidden');
+  elementBody.classList.add('modal-open');
+  document.addEventListener('keydown', pressingEsc);
+  enableFilters();
+  makeScalable();
+  hashtagInputHandler.addEventListener('keydown', onKeydownEscape);
+  commentInputHandler.addEventListener('keydown', onKeydownEscape);
+};
 
-//настройки Pristine для формы загрузки публикации
-const pristine = new Pristine(uploadForm, {
-  classTo: 'img-upload__field-wrapper',
-  errorClass: 'is-invalid',
-  successClass: 'is-valid',
-  errorTextParent: 'img-upload__field-wrapper',
-  errorTextTag: 'div',
-  errorTextClass: 'form-error'
+function onKeydownEscape(evt) {
+  if(isEscapeKey(evt)) {
+    evt.stopPropagation();
+  }
+}
+
+//загрузка публикаций через upload-file
+uploadInputPublicationHandler.addEventListener('change', openModalUploaded);
+
+//закрытие модального окна
+const closeModalUploaded = () => {
+  overlayModalPublication.classList.add('hidden');
+  elementBody.classList.remove('modal-open');
+  document.removeEventListener('keydown', pressingEsc);
+  hashtagInputHandler.removeEventListener('keydown', onKeydownEscape);
+  commentInputHandler.removeEventListener('keydown', onKeydownEscape);
+
+  disableFilters();
+  makeUnScalable();
+  uploadFormHandler.reset();
+  pristine.reset();
+};
+
+//закрытие модального окна по Esc
+function pressingEsc (evt) {
+  if(isEscapeKey(evt)) {
+    closeModalUploaded();
+  }
+}
+//закрытие по клику на кнопку "крестик"
+onButtonCloseModalUpload.addEventListener('click', () => {
+  closeModalUploaded();
 });
 
+//валидация комментариев публикации
+const validateDescription = (descriptionInputValue) => checkStringLength(descriptionInputValue, MAX_LENGTH_COMMENT);
+
 //проверка валидации библиотекой Pristine
-pristine.addValidator(hashtagInput, hashtagsValidation, getErrorMessage);
-pristine.addValidator(commentInput, validationDescription, `Допустимое количество символов ${MAX_LENGTH_COMMENT}`);
+pristine.addValidator(hashtagInputHandler, validateHashtags, getErrorMessage);
+pristine.addValidator(commentInputHandler, validateDescription, `Допустимое количество символов ${MAX_LENGTH_COMMENT}`);
 
 //блокировка кнопки при отправке
 const blockSubmitButton = () => {
@@ -150,7 +147,7 @@ const unblockSubmitButton = () => {
 };
 
 const setPublicationFormSubmit = (onSuccess) => {
-  uploadForm.addEventListener('submit', (evt) => {
+  uploadFormHandler.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
     const isValid = pristine.validate();
@@ -163,7 +160,6 @@ const setPublicationFormSubmit = (onSuccess) => {
           successModalOpen();
         },
         () => {
-          showAlert('Не удалось отправить форму. Попробуйте ещё раз');
           unblockSubmitButton();
           errorModalOpen();
         },
@@ -173,6 +169,6 @@ const setPublicationFormSubmit = (onSuccess) => {
   });
 };
 
-uploadInputPublication.addEventListener('change', openingModalUploaded);
+uploadInputPublicationHandler.addEventListener('change', openModalUploaded);
 
-export {setPublicationFormSubmit, openingModalUploaded, closeModalUploaded};
+export {setPublicationFormSubmit, openModalUploaded, closeModalUploaded, pressingEsc};

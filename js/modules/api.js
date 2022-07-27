@@ -1,7 +1,7 @@
 import { showAlert } from './util.js';
 
 const GET_FROM = 'https://26.javascript.pages.academy/kekstagram/data';
-const SEND_TO = 'https://26.javascript.pages.academy/kekstagram';
+const SEND_TO = 'https://26.javascript.pages.academ/kekstagram';
 
 //получение данных с сервера
 const getData = (onSuccess) => {

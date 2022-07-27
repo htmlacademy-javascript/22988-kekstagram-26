@@ -4,9 +4,9 @@ import {renderUserPhotos} from './rendering-publications.js';
 const PUBLICATION_FILTER_NUMBER = 10;
 
 const publicationFiltersContainer = document.querySelector('.img-filters');
-const defaultFilterButton = publicationFiltersContainer.querySelector('#filter-default');
-const randomFilterButton = publicationFiltersContainer.querySelector('#filter-random');
-const discussedFilterButton = publicationFiltersContainer.querySelector('#filter-discussed');
+const defaultFilterButtonHundler = publicationFiltersContainer.querySelector('#filter-default');
+const randomFilterButtonHandler = publicationFiltersContainer.querySelector('#filter-random');
+const discussedFilterButtonHandler = publicationFiltersContainer.querySelector('#filter-discussed');
 
 //сортировка по убыванию
 const compareComments = (publicationA, publicationB) => {
@@ -43,7 +43,7 @@ const clearPublicationsContainer = () => {
   });
 };
 
-const renderpublicationsFilter = (publications) => {
+const renderPublicationsFilter = (publications) => {
   clearPublicationsContainer();
   renderUserPhotos(publications);
 };
@@ -51,27 +51,32 @@ const renderpublicationsFilter = (publications) => {
 //создание и работа фильтров с использование debounce
 const setFilters = (publications) => {
   publicationFiltersContainer.classList.remove('img-filters--inactive');
-  defaultFilterButton.addEventListener('click', debounce((evt) => {
-    removeActiveClass();
-    if (evt.target === defaultFilterButton) {
-      defaultFilterButton.classList.add('img-filters__button--active');
-    }
-    renderpublicationsFilter(createDefaultFilter(publications));
-  }));
-  randomFilterButton.addEventListener('click', debounce((evt) => {
-    removeActiveClass();
-    if (evt.target === randomFilterButton) {
-      randomFilterButton.classList.add('img-filters__button--active');
-    }
-    renderpublicationsFilter(createRandomFilter(publications));
-  }));
-  discussedFilterButton.addEventListener('click', debounce((evt) => {
-    removeActiveClass();
-    if (evt.target === discussedFilterButton) {
-      discussedFilterButton.classList.add('img-filters__button--active');
-    }
-    renderpublicationsFilter(createDiscussedFilter(publications));
-  }));
+  const debouncedChangeFilter = debounce(changeFilter);
+  defaultFilterButtonHundler.addEventListener('click', (evt) => {
+    debouncedChangeFilter(publications, evt);
+  });
+  randomFilterButtonHandler.addEventListener('click', (evt) => {
+    debouncedChangeFilter(publications, evt);
+  });
+  discussedFilterButtonHandler.addEventListener('click', (evt) => {
+    debouncedChangeFilter(publications, evt);
+  });
 };
+
+function changeFilter(publications, evt) {
+  removeActiveClass();
+  if (evt.target === defaultFilterButtonHundler) {
+    defaultFilterButtonHundler.classList.add('img-filters__button--active');
+    renderPublicationsFilter(createDefaultFilter(publications));
+  }
+  if (evt.target === randomFilterButtonHandler) {
+    randomFilterButtonHandler.classList.add('img-filters__button--active');
+    renderPublicationsFilter(createRandomFilter(publications));
+  }
+  if (evt.target === discussedFilterButtonHandler) {
+    discussedFilterButtonHandler.classList.add('img-filters__button--active');
+    renderPublicationsFilter(createDiscussedFilter(publications));
+  }
+}
 
 export {setFilters};
