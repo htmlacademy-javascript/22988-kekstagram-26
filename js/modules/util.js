@@ -1,3 +1,4 @@
+const ESC = 'Escape';
 const ALERT_SHOW_TIME = 3000;
 const RERENDER_DELAY = 500;
 
@@ -21,13 +22,10 @@ const getRandomUniqueElements = (arr) => {
   return elements;
 };
 
-//возврат случайного элемента массива
-const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length - 1)];
-
 //проверка длины строки
 const checkStringLength = (string, length) => string.length <= length;
 
-const mathClamp = (number, min, max) => {
+const mathNumericRange = (number, min, max) => {
   if (number < min) {
     number = min;
   }
@@ -38,7 +36,7 @@ const mathClamp = (number, min, max) => {
 };
 
 //закрытие по ESC
-const isEscapeKey = (evt) => (evt.key === 'Escape');
+const isEscapeKey = (evt) => (evt.key === ESC);
 
 //вывод сообщения об ошибке отправки данных
 const showAlert = (message) => {
@@ -71,4 +69,4 @@ const debounce = (callback, timeoutDelay = RERENDER_DELAY) => {
   };
 };
 
-export {getRandomPositiveInteger, getRandomArrayElement, getRandomUniqueElements, isEscapeKey, checkStringLength, mathClamp, showAlert, debounce};
+export {getRandomPositiveInteger, getRandomUniqueElements, isEscapeKey, checkStringLength, mathNumericRange, showAlert, debounce};

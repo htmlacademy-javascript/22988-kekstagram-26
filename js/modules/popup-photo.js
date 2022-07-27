@@ -8,13 +8,13 @@ const fullScreenPublication = document.querySelector('.big-picture');
 const photoAddress = fullScreenPublication.querySelector('.big-picture img');
 const photoLikes = fullScreenPublication.querySelector('.big-picture__social').querySelector('.likes-count');
 const photoDescription = fullScreenPublication.querySelector('.big-picture__social').querySelector('.social__caption');
-const buttonCloseModal = fullScreenPublication.querySelector('.big-picture__cancel');
+const buttonCloseModalHandler = fullScreenPublication.querySelector('.big-picture__cancel');
 
 const formComments = fullScreenPublication.querySelector('.social__comments');
 const commentTemplate = formComments.querySelector('.social__comment');
 const photoComments = fullScreenPublication.querySelector('.social__comment-count').querySelector('.comments-count');
 
-const commentsLoader = fullScreenPublication.querySelector('.comments-loader');
+const commentsLoaderHandler = fullScreenPublication.querySelector('.comments-loader');
 const uploadedComments = document.querySelector('.comments-uploaded');
 let commentIndex = 0;
 let commentsOnPublication = [];
@@ -35,14 +35,14 @@ const createComment = (commentList) => {
 };
 
 //реализация показа новых комментариев по кнопке "загрузить еще"
-const uploadingPublicationComments = () => {
+const uploadPublicationComments = () => {
   createComment(commentsOnPublication.slice(commentIndex, commentIndex + COMMENTS_TO_SHOW));
   commentIndex += COMMENTS_TO_SHOW;
 
   if (commentsOnPublication.length > commentIndex) {
-    commentsLoader.classList.remove('hidden');
+    commentsLoaderHandler.classList.remove('hidden');
   } else {
-    commentsLoader.classList.add('hidden');
+    commentsLoaderHandler.classList.add('hidden');
     commentIndex = commentsOnPublication.length;
   }
   uploadedComments.textContent = commentIndex;
@@ -51,7 +51,7 @@ const uploadingPublicationComments = () => {
 //наполнение информационной части публикации
 const createModalPhoto = (photo) => {
   commentIndex = 0;
-  commentsLoader.addEventListener('click', uploadingPublicationComments);
+  commentsLoaderHandler.addEventListener('click', uploadPublicationComments);
   photoAddress.src = photo.url;
   photoLikes.textContent = photo.likes;
   photoComments.textContent = photo.comments.length;
@@ -59,7 +59,7 @@ const createModalPhoto = (photo) => {
   commentsOnPublication = photo.comments;
 
   formComments.innerHTML = '';
-  uploadingPublicationComments();
+  uploadPublicationComments();
 };
 
 //закрытие модального окна публикации
@@ -68,7 +68,7 @@ const closefullPublication = () => {
   elementBody.classList.remove('modal-open');
 
   document.removeEventListener('keydown', escButton);
-  commentsLoader.removeEventListener('click', uploadingPublicationComments);
+  commentsLoaderHandler.removeEventListener('click', uploadPublicationComments);
   formComments.innerHTML = '';
 };
 
@@ -77,11 +77,11 @@ const openModalPhoto = (photo) => {
   fullScreenPublication.classList.remove('hidden');
   elementBody.classList.add('modal-open');
 
-  buttonCloseModal.addEventListener('click', closefullPublication);
+  buttonCloseModalHandler.addEventListener('click', closefullPublication);
   document.addEventListener('keydown', escButton);
 
 
-  commentsLoader.addEventListener('click', uploadingPublicationComments);
+  commentsLoaderHandler.addEventListener('click', uploadPublicationComments);
   formComments.innerHTML = '';
   createModalPhoto(photo);
 };

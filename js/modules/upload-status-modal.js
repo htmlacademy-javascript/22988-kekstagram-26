@@ -1,11 +1,12 @@
 import {isEscapeKey} from './util.js';
+import {pressingEsc} from './validation-form.js';
 
 const successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
 const successMessageElement = successMessageTemplate.cloneNode(true);
-const successButton = successMessageElement.querySelector('.success__button');
+const successButtonHandler = successMessageElement.querySelector('.success__button');
 const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
 const errorMessageElement = errorMessageTemplate.cloneNode(true);
-const errorButton = errorMessageElement.querySelector('.error__button');
+const errorButtonHandler = errorMessageElement.querySelector('.error__button');
 const elementBody = document.querySelector('body');
 
 //открытие(закрытие) сообщения об успешной отправке
@@ -16,12 +17,14 @@ const onPopupSuccessClose = (evt) => {
   }
 };
 
-//проверка на нажатие в область
-const successModalAreaClick = (evt) => {
+successMessageElement.addEventListener('click', (evt) => {
   if (evt.target.matches('.success')) {
     successModalClose();
   }
-};
+  if (evt.target.matches('.error')) {
+    errorModalClose();
+  }
+});
 
 // Открытие и закрытие сообщения о неудачной отправке
 const onPopupErrorClose = (evt) => {
@@ -31,19 +34,12 @@ const onPopupErrorClose = (evt) => {
   }
 };
 
-const errorModalAreaClick = (evt) => {
-  if (evt.target.matches('.error')) {
-    errorModalClose();
-  }
-};
-
 //отображение сообщения успешной отправки
 function successModalOpen() {
   elementBody.append(successMessageElement);
   elementBody.classList.add('modal-open');
   document.addEventListener('keydown', onPopupSuccessClose);
-  document.addEventListener('click', successModalAreaClick);
-  successButton.addEventListener('click', successModalClose);
+  successButtonHandler.addEventListener('click', successModalClose);
 }
 
 //скрытие сообщения успешной отправки
@@ -59,8 +55,8 @@ function errorModalOpen () {
   elementBody.append(errorMessageElement);
   elementBody.classList.add('modal-open');
   document.addEventListener('keydown', onPopupErrorClose);
-  document.addEventListener('click', errorModalAreaClick);
-  errorButton.addEventListener('click', errorModalClose);
+  document.removeEventListener('keydown', pressingEsc);
+  errorButtonHandler.addEventListener('click', errorModalClose);
 }
 
 //скрытие сообщения об ошибке отправки
@@ -68,6 +64,7 @@ function errorModalClose () {
   errorMessageElement.remove();
   elementBody.classList.remove('modal-open');
   document.removeEventListener('keydown', onPopupErrorClose);
+  document.addEventListener('keydown', pressingEsc);
 }
 
 export {successModalOpen, errorModalOpen};
